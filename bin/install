@@ -11,15 +11,15 @@ install() {
     echo "Only binary versions are supported"
     exit 1
   fi
-  
+
   local urlPrefix="${FLUTTER_STORAGE_BASE_URL}/flutter_infra_release/releases"
-  
+
   local versionListUrl="${FLUTTER_STORAGE_BASE_URL}/flutter_infra_release/releases/releases_macos.json"
-  
+
   if [ "$(uname -s)" == "Linux" ]; then
     versionListUrl="${FLUTTER_STORAGE_BASE_URL}/flutter_infra_release/releases/releases_linux.json"
   fi
-  
+
   local escapedInstallVersion=$(echo $ASDF_INSTALL_VERSION | sed 's/\./\\\./g;s/\+/\\\+/g')
   local jsonResponse=$(curl -sL "${versionListUrl}" | "${JQ_BIN}" --arg VERSION "${escapedInstallVersion}" '.releases[] | select((.version + "-" + .channel) | test("^v?" + $VERSION))')
   local jsonResponseLength=$(echo "${jsonResponse}" | jq -s 'length')
