@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for flutter.
-GH_REPO="https://github.com/flutter/flutter"
 FLUTTER_LIST_BASE_URL="https://storage.googleapis.com"
 TOOL_NAME="flutter"
 TOOL_TEST="flutter --help"
@@ -27,6 +25,17 @@ platform() {
 	esac
 }
 
+platform_extension() {
+	case "$(uname -s)" in
+	"Linux")
+		echo "tar.xz"
+		;;
+	*)
+		echo "zip"
+		;;
+	esac
+}
+
 machine_architecture() {
 	case "$(uname -m)" in
 	"x86_64")
@@ -43,6 +52,17 @@ machine_architecture() {
 
 flutter_download_list_url() {
 	echo "$FLUTTER_LIST_BASE_URL/flutter_infra_release/releases/releases_$(platform).json"
+}
+
+tar_decompression_option() {
+	case "$(uname -s)" in
+	"Linux")
+		echo "-xJf"
+		;;
+	*)
+		echo "-xzf"
+		;;
+	esac
 }
 
 curl_opts=(-fsSL)
@@ -71,12 +91,26 @@ list_all_versions() {
 }
 
 download_release() {
-	local version filename url
+	local version filename version_without_suffix channel url
 	version="$1"
 	filename="$2"
+	version_without_suffix="$(echo "$version" | sed -E 's/-(stable|beta|dev)$//')"
+	channel="$(echo "$version" | grep -oE '(stable|beta|dev)$')"
+	if [ -z "$channel" ]; then
+		channel="stable"
+	fi
 
-	# TODO: Adapt the release URL convention for flutter
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	local query=".[] | select(.channel == \"$channel\") | select(.version | test(\"^v?\" + \"$version_without_suffix\"))"
+	local target
+	target="$(list_released_versions | jq -r "$query")"
+	if [ "$(echo "$target" | jq -s 'length')" -gt 1 ]; then
+		query="select(.dart_sdk_arch == \"$(machine_architecture)\")"
+		target=$(echo "$target" | jq -r "$query")
+	fi
+
+	local archive_file
+	archive_file="$(echo "$target" | jq -r '.archive')"
+	url="$FLUTTER_LIST_BASE_URL/flutter_infra_release/releases/$archive_file"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
