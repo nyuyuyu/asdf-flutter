@@ -3,8 +3,11 @@
 set -euo pipefail
 
 FLUTTER_LIST_BASE_URL="https://storage.googleapis.com"
+JQ_DOWNLOAD_BASE_URL="https://github.com/stedolan/jq/releases/latest/download"
 TOOL_NAME="flutter"
 TOOL_TEST="flutter --help"
+
+curl_opts=(-fsSL)
 
 fail() {
 	echo -e "asdf-$TOOL_NAME: $*"
@@ -66,10 +69,59 @@ tar_decompression_option() {
 }
 
 jq_bin_dir() {
-	echo -n "$ASDF_PLUGIN_PATH/cache"
+	local current_script_path plugin_dir
+	current_script_path=${BASH_SOURCE[0]}
+	plugin_dir=$(dirname "$(dirname "$current_script_path")")
+
+	echo "$plugin_dir/.cache"
 }
 
-curl_opts=(-fsSL)
+jq_filename() {
+	case "$(uname -s)" in
+	Darwin)
+		case "$(uname -m)" in
+		x86_64)
+			echo "jq-osx-amd64"
+			;;
+		arm64)
+			echo "jq-osx-amd64"
+			;;
+		*)
+			fail "Unsupported archtecture"
+			;;
+		esac
+		;;
+	Linux)
+		case "$(uname -m)" in
+		x86_64)
+			echo "jq-linux64"
+			;;
+		*)
+			fail "Unsupported archtecture"
+			;;
+		esac
+		;;
+	*)
+		fail "Unsupported archtecture"
+		;;
+	esac
+}
+
+download_jq_if_not_exists() {
+	if ! which jq >/dev/null 2>&1; then
+		PATH="$PATH:$(jq_bin_dir)"
+		export PATH
+		if ! which jq >/dev/null 2>&1; then
+			local url jq_path
+			url="$JQ_DOWNLOAD_BASE_URL/$(jq_filename)"
+			jq_path="$(jq_bin_dir)/jq"
+
+			mkdir -p "$(jq_bin_dir)"
+			curl "${curl_opts[@]}" "$url" -o "$jq_path"
+			chmod +x "$jq_path"
+		fi
+	fi
+}
 
 sort_versions() {
 	sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' |
@@ -77,6 +129,9 @@ sort_versions() {
 }
 
 list_released_versions() {
+	# download `jq` if it is not in your PATH variable
+	download_jq_if_not_exists
+
 	curl "${curl_opts[@]}" "$(flutter_download_list_url)" | jq -r '.releases[].version |= gsub("^v"; "") | .releases'
 }
 
@@ -87,10 +142,16 @@ list_filter_by_archtecture() {
 		query=".[] | select(.dart_sdk_arch == \"$arch\" or (has(\"dart_sdk_arch\") | not))"
 	fi
 
+	# download `jq` if it is not in your PATH variable
+	download_jq_if_not_exists
+
 	list_released_versions | jq -r "$query"
 }
 
 list_all_versions() {
+	# download `jq` if it is not in your PATH variable
+	download_jq_if_not_exists
+
 	list_filter_by_archtecture "$(machine_architecture)" | jq -r '.version + "-" + .channel'
 }
 
@@ -103,6 +164,9 @@ download_release() {
 	if [ -z "$channel" ]; then
 		channel="stable"
 	fi
+
+	# download `jq` if it is not in your PATH variable
+	download_jq_if_not_exists
 
 	local query=".[] | select(.channel == \"$channel\") | select(.version | test(\"^v?\" + \"$version_without_suffix\"))"
 	local target
