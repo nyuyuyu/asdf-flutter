@@ -65,6 +65,10 @@ tar_decompression_option() {
 	esac
 }
 
+jq_bin_dir() {
+	echo -n "$ASDF_PLUGIN_PATH/cache"
+}
+
 curl_opts=(-fsSL)
 
 sort_versions() {
