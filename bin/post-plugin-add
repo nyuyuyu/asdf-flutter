@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+current_script_path=${BASH_SOURCE[0]}
+plugin_dir=$(dirname "$(dirname "$current_script_path")")
+
+# shellcheck source=./lib/utils.bash
+. "${plugin_dir}/lib/utils.bash"
+
+# The location where the `jq` binary will be placed if `jq` is not found in your $PATH variable.
+mkdir -p "$(jq_bin_dir)"
+
+echo ""
+echo "flutter requires several dependent programs to be installed."
+echo "See below for details."
+echo ""
+echo "https://docs.flutter.dev/get-started/install"
+echo ""
