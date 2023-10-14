@@ -208,3 +208,14 @@ install_version() {
 		fail "An error occurred while installing $TOOL_NAME $version."
 	)
 }
+
+parse_fvm_config() {
+	local config version
+	config="$1"
+
+	# download `jq` if it is not in your PATH variable
+	download_jq_if_not_exists
+
+	version="$(jq <"$config" -r '.flutterSdkVersion |= gsub("^v"; "") | .flutterSdkVersion')"
+	echo "$version"
+}
