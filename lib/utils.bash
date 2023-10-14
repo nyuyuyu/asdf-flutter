@@ -3,7 +3,7 @@
 set -euo pipefail
 
 FLUTTER_LIST_BASE_URL="https://storage.googleapis.com"
-JQ_DOWNLOAD_BASE_URL="https://github.com/stedolan/jq/releases/latest/download"
+JQ_DOWNLOAD_BASE_URL="https://github.com/jqlang/jq/releases/latest/download"
 TOOL_NAME="flutter"
 TOOL_TEST="flutter --help"
 
