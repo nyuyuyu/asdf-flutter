@@ -57,17 +57,6 @@ flutter_download_list_url() {
 	echo "$FLUTTER_LIST_BASE_URL/flutter_infra_release/releases/releases_$(platform).json"
 }
 
-tar_decompression_option() {
-	case "$(uname -s)" in
-	"Linux")
-		echo "-xJf"
-		;;
-	*)
-		echo "-xzf"
-		;;
-	esac
-}
-
 jq_bin_dir() {
 	local current_script_path plugin_dir
 	current_script_path=${BASH_SOURCE[0]}
