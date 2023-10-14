@@ -81,10 +81,10 @@ jq_filename() {
 	Darwin)
 		case "$(uname -m)" in
 		x86_64)
-			echo "jq-osx-amd64"
+			echo "jq-macos-amd64"
 			;;
 		arm64)
-			echo "jq-osx-amd64"
+			echo "jq-macos-arm64"
 			;;
 		*)
 			fail "Unsupported archtecture"
@@ -94,7 +94,7 @@ jq_filename() {
 	Linux)
 		case "$(uname -m)" in
 		x86_64)
-			echo "jq-linux64"
+			echo "jq-linux-amd64"
 			;;
 		*)
 			fail "Unsupported archtecture"
