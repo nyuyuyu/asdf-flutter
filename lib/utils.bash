@@ -68,12 +68,16 @@ flutter_download_list_url() {
 	echo "$FLUTTER_LIST_BASE_URL/flutter_infra_release/releases/releases_$(platform).json"
 }
 
-jq_bin_dir() {
+cache_dir() {
 	local current_script_path plugin_dir
 	current_script_path=${BASH_SOURCE[0]}
 	plugin_dir=$(dirname "$(dirname "$current_script_path")")
 
 	echo "$plugin_dir/.cache"
+}
+
+jq_bin_dir() {
+	echo "$(cache_dir)/bin"
 }
 
 jq_filename() {
@@ -207,4 +211,34 @@ install_version() {
 		rm -rf "$install_path"
 		fail "An error occurred while installing $TOOL_NAME $version."
 	)
+}
+
+parse_fvm_config() {
+	local config version
+	config="$1"
+
+	# download `jq` if it is not in your PATH variable
+	download_jq_if_not_exists
+
+	version="$(jq <"$config" -r '.flutterSdkVersion |= gsub("^v"; "") | .flutterSdkVersion')"
+	echo "$version"
+}
+
+create_cache_file() {
+	local file expire now file_time diff
+	file="$1"
+	expire="$2"
+
+	if [ ! -e "$file" ]; then
+		mkdir -p "$(cache_dir)"
+		list_all_versions | sort_versions >"$file"
+	else
+		now="$(date +%s)"
+		file_time="$(date -r "$file" +%s)"
+		diff="$((now - file_time))"
+		if [ "$diff" -gt "$expire" ]; then
+			mkdir -p "$(cache_dir)"
+			list_all_versions | sort_versions >"$file"
+		fi
+	fi
 }
