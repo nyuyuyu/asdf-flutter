@@ -10,6 +10,7 @@
 
 - [Dependencies](#dependencies)
 - [Install](#install)
+- [Support fvm](#support-fvm)
 - [Contributing](#contributing)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
@@ -48,6 +49,10 @@ flutter --help
 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
 install & manage versions.
+
+# Support fvm
+
+If you have set `legacy_version_file = yes` in `$HOME/.asdfrc`, you can read the Flutter version from `.fvm/fvm_config.json`, the [fvm](https://fvm.app/) configuration file.
 
 # Troubleshooting
 
