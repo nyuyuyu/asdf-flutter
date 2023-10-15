@@ -8,5 +8,8 @@ plugin_dir=$(dirname "$(dirname "$current_script_path")")
 # shellcheck source=./lib/utils.bash
 source "${plugin_dir}/lib/utils.bash"
 
+cache_file="$(cache_dir)/list-all-versions.txt"
+create_cache_file "$cache_file" "$((60 * 60 * 24))"
+
 version="$(parse_fvm_config "$1")"
-list_all_versions | sort_versions | grep "$version" | tail -n1 | xargs echo
+grep <"$cache_file" "$version" | tail -n1 | xargs echo
