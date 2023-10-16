@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/nyuyuyu/asdf-flutter/compare/v1.1.0...v1.1.1) (2023-10-16)
+
+
+### Bug Fixes
+
+* fvm support with rtx ([#8](https://github.com/nyuyuyu/asdf-flutter/issues/8)) ([4a0ecfa](https://github.com/nyuyuyu/asdf-flutter/commit/4a0ecfa876ba168a00508cb76243527e5704e646))
+
 ## [1.1.0](https://github.com/nyuyuyu/asdf-flutter/compare/v1.0.1...v1.1.0) (2023-10-15)
 
 
