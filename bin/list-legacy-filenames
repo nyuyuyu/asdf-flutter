@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-echo ".fvm/fvm_config.json"
+if [ -n "$RTX_SHELL" ]; then
+	# workaround for rtx compatibility
+	echo ".fvm/fvm_config.json fvm_config.json"
+else
+	echo ".fvm/fvm_config.json"
+fi
