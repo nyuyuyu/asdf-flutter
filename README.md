@@ -26,8 +26,6 @@
 Plugin:
 
 ```shell
-asdf plugin add flutter
-# or
 asdf plugin add flutter https://github.com/nyuyuyu/asdf-flutter.git
 ```
 
