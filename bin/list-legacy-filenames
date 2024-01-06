@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ -n "$RTX_SHELL" ]; then
-	# workaround for rtx compatibility
+if [ -n "$RTX_SHELL" ] || [ -n "$MISE_SHELL" ]; then
+	# workaround for mise compatibility
 	echo ".fvm/fvm_config.json fvm_config.json"
 else
 	echo ".fvm/fvm_config.json"
