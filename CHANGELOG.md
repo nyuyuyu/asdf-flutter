@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/nyuyuyu/asdf-flutter/compare/v1.1.1...v1.1.2) (2024-01-06)
+
+
+### Bug Fixes
+
+* support renamed to `mise` ([#15](https://github.com/nyuyuyu/asdf-flutter/issues/15)) ([7816b7f](https://github.com/nyuyuyu/asdf-flutter/commit/7816b7fa13743a2387d6ca594fd569056010a00a))
+
 ## [1.1.1](https://github.com/nyuyuyu/asdf-flutter/compare/v1.1.0...v1.1.1) (2023-10-16)
 
 
