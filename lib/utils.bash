@@ -214,13 +214,19 @@ install_version() {
 }
 
 parse_fvm_config() {
-	local config version
-	config="$1"
+	local file_path file_name version
+	file_path="$1"
+	file_name="$(basename -- "$file_path")"
+	version="unknown"
 
 	# download `jq` if it is not in your PATH variable
 	download_jq_if_not_exists
 
-	version="$(jq <"$config" -r '.flutterSdkVersion |= gsub("^v"; "") | .flutterSdkVersion')"
+	if [ "$file_name" == ".fvmrc" ]; then
+		version="$(jq <"$file_path" -r '.flutter |= gsub("^v"; "") | .flutter')"
+	elif [ "$file_name" == "fvm_config.json" ]; then
+		version="$(jq <"$file_path" -r '.flutterSdkVersion |= gsub("^v"; "") | .flutterSdkVersion')"
+	fi
 	echo "$version"
 }
 
