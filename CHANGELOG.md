@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/nyuyuyu/asdf-flutter/compare/v1.1.2...v1.2.0) (2024-02-13)
+
+
+### Features
+
+* support fvm 3.0 config file ([#17](https://github.com/nyuyuyu/asdf-flutter/issues/17)) ([39e4b73](https://github.com/nyuyuyu/asdf-flutter/commit/39e4b7360df8bd391a0e7a9754d780e41d888236))
+
 ## [1.1.2](https://github.com/nyuyuyu/asdf-flutter/compare/v1.1.1...v1.1.2) (2024-01-06)
 
 
