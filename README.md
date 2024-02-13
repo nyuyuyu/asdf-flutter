@@ -50,7 +50,7 @@ install & manage versions.
 
 # Support fvm
 
-If you have set `legacy_version_file = yes` in `$HOME/.asdfrc`, you can read the Flutter version from `.fvm/fvm_config.json`, the [fvm](https://fvm.app/) configuration file.
+If you have set `legacy_version_file = yes` in `$HOME/.asdfrc`, you can read the Flutter version from `.fvmrc` or `.fvm/fvm_config.json`, the [fvm](https://fvm.app/) configuration file.
 
 # Troubleshooting
 
