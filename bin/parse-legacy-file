@@ -12,4 +12,10 @@ cache_file="$(cache_dir)/list-all-versions.txt"
 create_cache_file "$cache_file" "$((60 * 60 * 24))"
 
 version="$(parse_fvm_config "$1")"
+
+# Check if version contains stable/dev/beta, if not, set channel to stable
+if [[ ! "$version" == *stable && ! "$version" == *dev && ! "$version" == *beta ]]; then
+    version="${version}-stable"
+fi
+
 grep <"$cache_file" "$version" | tail -n1 | xargs echo
