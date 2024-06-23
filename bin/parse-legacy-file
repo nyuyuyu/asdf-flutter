@@ -15,7 +15,7 @@ version="$(parse_fvm_config "$1")"
 
 # Check if version contains stable/dev/beta, if not, set channel to stable
 if [[ ! "$version" == *stable && ! "$version" == *dev && ! "$version" == *beta ]]; then
-    version="${version}-stable"
+	version="${version}-stable"
 fi
 
 grep <"$cache_file" "$version" | tail -n1 | xargs echo
