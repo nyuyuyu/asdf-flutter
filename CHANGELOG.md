@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/nyuyuyu/asdf-flutter/compare/v1.2.0...v1.2.1) (2024-06-23)
+
+
+### Bug Fixes
+
+* set stable channel as default when using fvm config ([#20](https://github.com/nyuyuyu/asdf-flutter/issues/20)) ([317e233](https://github.com/nyuyuyu/asdf-flutter/commit/317e233f40bd6f382347b4f796d306dc947fd327))
+
 ## [1.2.0](https://github.com/nyuyuyu/asdf-flutter/compare/v1.1.2...v1.2.0) (2024-02-13)
 
 
