@@ -5,7 +5,7 @@
 
 ### Bug Fixes
 
-* prioritize the `stable` channel using  fvm config file ([#22](https://github.com/nyuyuyu/asdf-flutter/issues/22)) ([a664f6e](https://github.com/nyuyuyu/asdf-flutter/commit/a664f6e29da5e0a58143e20251cb3864f93f20a6))
+* set stable channel as default when using fvm config ([#20](https://github.com/nyuyuyu/asdf-flutter/issues/20)) ([317e233](https://github.com/nyuyuyu/asdf-flutter/commit/317e233f40bd6f382347b4f796d306dc947fd327))
 
 ## [1.2.0](https://github.com/nyuyuyu/asdf-flutter/compare/v1.1.2...v1.2.0) (2024-02-13)
 
