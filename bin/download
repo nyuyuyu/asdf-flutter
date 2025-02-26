@@ -1,22 +1,39 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+echo "INSTALL TYPE!! $ASDF_INSTALL_TYPE"
+echo "DOWNLOAD!! $ASDF_DOWNLOAD_PATH"
+echo "ASDF_INSTALL_VERSION!! $ASDF_INSTALL_VERSION"
+echo "ASDF_INSTALL_PATH!! $ASDF_INSTALL_PATH"
+
 
 current_script_path=${BASH_SOURCE[0]}
 plugin_dir=$(dirname "$(dirname "$current_script_path")")
+echo "HOLA!! $plugin_dir"
 
 # shellcheck source=./lib/utils.bash
 source "${plugin_dir}/lib/utils.bash"
 
 mkdir -p "$ASDF_DOWNLOAD_PATH"
 
-release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION.$(platform_extension)"
+if [ "$ASDF_INSTALL_TYPE" = "version" ]; then
 
-# Download tar.gz file to the download directory
-download_release "$ASDF_INSTALL_VERSION" "$release_file"
+	release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION.$(platform_extension)"
 
-#  Extract contents of tar.gz file into the download directory
-$(platform_tar) -xf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+	echo "Release file: $release_file  $ASDF_DOWNLOAD_PATH"
 
-# Remove the tar.gz file since we don't need to keep it
-rm "$release_file"
+	# Download tar.gz file to the download directory
+	download_release "$ASDF_INSTALL_VERSION" "$release_file"
+
+	#  Extract contents of tar.gz file into the download directory
+	$(platform_tar) -xf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+
+	# Remove the tar.gz file since we don't need to keep it
+	rm "$release_file"
+
+elif [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
+	:
+
+else
+	fail "Unknown install type $ASDF_INSTALL_TYPE"
+fi

@@ -194,14 +194,26 @@ install_version() {
 	local install_path="${3%/bin}"
 	local bin_path="$install_path/bin"
 
-	if [ "$install_type" != "version" ]; then
-		fail "asdf-$TOOL_NAME supports release installs only"
+	echo "Install type: $install_type"
+	echo "Version: $version"
+	echo "Install path: $install_path"
+	echo "Bin path: $bin_path"
+
+	if [ "$install_type" != "version" ] && [ "$install_type" != "ref" ]; then
+		fail "asdf-$TOOL_NAME supports release and ref installs only"
+	fi
+
+	if [ "$install_type" = "ref" ]; then
+		git clone --depth 1 https://github.com/flutter/flutter "$install_path"
+		cd "$install_path"
+		git fetch --depth=1 origin "$version"
+		git checkout "$version"
+	elif [ "$install_type" = "version" ]; then
+		rmdir "$install_path"
+		mv "$ASDF_DOWNLOAD_PATH" "$install_path"
 	fi
 
 	(
-		rmdir "$install_path"
-		mv "$ASDF_DOWNLOAD_PATH" "$install_path"
-
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
 		test -x "$bin_path/$tool_cmd" || fail "Expected $bin_path/$tool_cmd to be executable."
