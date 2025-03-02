@@ -2,9 +2,8 @@
 
 set -euo pipefail
 
-echo "INPUT URL ${ASDF_FLUTTER_SOURCE_REPO_URL:-fallback}"
-
 # An user of the plugin could specify a custom Flutter fork
+# using Mise environment variables for example: https://mise.jdx.dev/environments/
 export ASDF_FLUTTER_SOURCE_REPO_URL=${ASDF_FLUTTER_SOURCE_REPO_URL:-"https://github.com/flutter/flutter"}
 
 FLUTTER_LIST_BASE_URL="https://storage.googleapis.com"
@@ -199,19 +198,14 @@ install_version() {
 	local install_path="${3%/bin}"
 	local bin_path="$install_path/bin"
 
-	echo "Install type: $install_type"
-	echo "Version: $version"
-	echo "Install path: $install_path"
-	echo "Bin path: $bin_path"
-
 	if [ "$install_type" != "version" ] && [ "$install_type" != "ref" ]; then
 		fail "asdf-$TOOL_NAME supports release and ref installs only"
 	fi
 
-	rmdir "$install_path"
-	mv "$ASDF_DOWNLOAD_PATH" "$install_path"
-
 	(
+		rmdir "$install_path"
+		mv "$ASDF_DOWNLOAD_PATH" "$install_path"
+
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
 		test -x "$bin_path/$tool_cmd" || fail "Expected $bin_path/$tool_cmd to be executable."

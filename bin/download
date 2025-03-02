@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-echo "INSTALL TYPE!! $ASDF_INSTALL_TYPE"
-echo "DOWNLOAD!! $ASDF_DOWNLOAD_PATH"
-echo "ASDF_INSTALL_VERSION!! $ASDF_INSTALL_VERSION"
-echo "ASDF_INSTALL_PATH!! $ASDF_INSTALL_PATH"
-
 
 current_script_path=${BASH_SOURCE[0]}
 plugin_dir=$(dirname "$(dirname "$current_script_path")")
-echo "HOLA!! $plugin_dir"
 
 # shellcheck source=./lib/utils.bash
 source "${plugin_dir}/lib/utils.bash"
@@ -19,8 +13,6 @@ mkdir -p "$ASDF_DOWNLOAD_PATH"
 if [ "$ASDF_INSTALL_TYPE" = "version" ]; then
 
 	release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION.$(platform_extension)"
-
-	echo "Release file: $release_file  $ASDF_DOWNLOAD_PATH"
 
 	# Download tar.gz file to the download directory
 	download_release "$ASDF_INSTALL_VERSION" "$release_file"
@@ -33,12 +25,12 @@ if [ "$ASDF_INSTALL_TYPE" = "version" ]; then
 
 elif [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
 
-	echo "Cloning $ASDF_FLUTTER_SOURCE_REPO_URL to $ASDF_DOWNLOAD_PATH"
-
 	git clone --filter=blob:none --no-checkout "$ASDF_FLUTTER_SOURCE_REPO_URL" "$ASDF_DOWNLOAD_PATH"
+
 	cd "$ASDF_DOWNLOAD_PATH"
 
 	git fetch --depth 1 origin "$ASDF_INSTALL_VERSION"
+
 	git checkout "$ASDF_INSTALL_VERSION"
 
 else
