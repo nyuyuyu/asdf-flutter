@@ -32,7 +32,14 @@ if [ "$ASDF_INSTALL_TYPE" = "version" ]; then
 	rm "$release_file"
 
 elif [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
-	:
+
+	echo "Cloning $ASDF_FLUTTER_SOURCE_REPO_URL to $ASDF_DOWNLOAD_PATH"
+
+	git clone --filter=blob:none --no-checkout "$ASDF_FLUTTER_SOURCE_REPO_URL" "$ASDF_DOWNLOAD_PATH"
+	cd "$ASDF_DOWNLOAD_PATH"
+
+	git fetch --depth 1 origin "$ASDF_INSTALL_VERSION"
+	git checkout "$ASDF_INSTALL_VERSION"
 
 else
 	fail "Unknown install type $ASDF_INSTALL_TYPE"

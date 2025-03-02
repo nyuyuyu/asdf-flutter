@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+echo "INPUT URL ${ASDF_FLUTTER_SOURCE_REPO_URL:-fallback}"
+
+# An user of the plugin could specify a custom Flutter fork
+export ASDF_FLUTTER_SOURCE_REPO_URL=${ASDF_FLUTTER_SOURCE_REPO_URL:-"https://github.com/flutter/flutter"}
+
 FLUTTER_LIST_BASE_URL="https://storage.googleapis.com"
 JQ_DOWNLOAD_BASE_URL="https://github.com/jqlang/jq/releases/latest/download"
 TOOL_NAME="flutter"
@@ -203,15 +208,8 @@ install_version() {
 		fail "asdf-$TOOL_NAME supports release and ref installs only"
 	fi
 
-	if [ "$install_type" = "ref" ]; then
-		git clone --depth 1 https://github.com/flutter/flutter "$install_path"
-		cd "$install_path"
-		git fetch --depth=1 origin "$version"
-		git checkout "$version"
-	elif [ "$install_type" = "version" ]; then
-		rmdir "$install_path"
-		mv "$ASDF_DOWNLOAD_PATH" "$install_path"
-	fi
+	rmdir "$install_path"
+	mv "$ASDF_DOWNLOAD_PATH" "$install_path"
 
 	(
 		local tool_cmd
