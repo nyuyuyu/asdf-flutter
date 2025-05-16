@@ -29,17 +29,22 @@ Plugin:
 asdf plugin add flutter https://github.com/nyuyuyu/asdf-flutter.git
 ```
 
-flutter:
+Flutter:
 
 ```shell
 # Show all installable versions
-asdf list-all flutter
+asdf list all flutter
 
-# Install specific version
+# Install a specific version
 asdf install flutter latest
 
-# Set a version globally (on your ~/.tool-versions file)
-asdf global flutter latest
+# Install from a git ref of github.com/flutter/flutter repository(i.e. commit hash, tag and branch)
+# You can also specify a git ref for any repository set in the `ASDF_FLUTTER_SOURCE_REPO_URL` environment variable
+# See https://github.com/nyuyuyu/asdf-flutter/pull/25 for more details
+asdf install flutter ref:master
+
+# Set a default version(on your ~/.tool-versions file)
+asdf set --home flutter latest
 
 # Now flutter commands are available
 flutter --help
