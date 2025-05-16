@@ -33,7 +33,7 @@ flutter:
 
 ```shell
 # Show all installable versions
-asdf list-all flutter
+asdf list all flutter
 
 # Install a specific version
 asdf install flutter latest
@@ -43,8 +43,8 @@ asdf install flutter latest
 # See https://github.com/nyuyuyu/asdf-flutter/pull/25 for more details
 asdf install flutter ref:master
 
-# Set a version globally (on your ~/.tool-versions file)
-asdf global flutter latest
+# Set a default version(on your ~/.tool-versions file)
+asdf set --home flutter latest
 
 # Now flutter commands are available
 flutter --help
