@@ -29,7 +29,7 @@ Plugin:
 asdf plugin add flutter https://github.com/nyuyuyu/asdf-flutter.git
 ```
 
-flutter:
+Flutter:
 
 ```shell
 # Show all installable versions
