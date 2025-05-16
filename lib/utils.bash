@@ -192,6 +192,18 @@ download_release() {
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
+download_release_via_git_clone() {
+	local url ref path
+	url="$1"
+	ref="$2"
+	path="$3"
+
+	git clone --filter=blob:none --no-checkout "$url" "$path"
+	cd "$path"
+	git fetch --depth 1 origin "$ref"
+	git checkout "$ref"
+}
+
 install_version() {
 	local install_type="$1"
 	local version="$2"
