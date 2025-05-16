@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/nyuyuyu/asdf-flutter/compare/v1.2.1...v1.3.0) (2025-05-16)
+
+
+### Features
+
+* Support `ref` and fork installs ([#25](https://github.com/nyuyuyu/asdf-flutter/issues/25)) ([b9ccfce](https://github.com/nyuyuyu/asdf-flutter/commit/b9ccfce5c0951590cea32478bb8e71e61fceb243))
+
 ## [1.2.1](https://github.com/nyuyuyu/asdf-flutter/compare/v1.2.0...v1.2.1) (2024-06-23)
 
 
