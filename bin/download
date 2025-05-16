@@ -10,13 +10,30 @@ source "${plugin_dir}/lib/utils.bash"
 
 mkdir -p "$ASDF_DOWNLOAD_PATH"
 
-release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION.$(platform_extension)"
+if [ "$ASDF_INSTALL_TYPE" = "version" ]; then
 
-# Download tar.gz file to the download directory
-download_release "$ASDF_INSTALL_VERSION" "$release_file"
+	release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION.$(platform_extension)"
 
-#  Extract contents of tar.gz file into the download directory
-$(platform_tar) -xf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+	# Download tar.gz file to the download directory
+	download_release "$ASDF_INSTALL_VERSION" "$release_file"
 
-# Remove the tar.gz file since we don't need to keep it
-rm "$release_file"
+	#  Extract contents of tar.gz file into the download directory
+	$(platform_tar) -xf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+
+	# Remove the tar.gz file since we don't need to keep it
+	rm "$release_file"
+
+elif [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
+	# A commit/tag/branch can be specified using the "ref:<some-ref>" syntax
+
+	git clone --filter=blob:none --no-checkout "$ASDF_FLUTTER_SOURCE_REPO_URL" "$ASDF_DOWNLOAD_PATH"
+
+	cd "$ASDF_DOWNLOAD_PATH"
+
+	git fetch --depth 1 origin "$ASDF_INSTALL_VERSION"
+
+	git checkout "$ASDF_INSTALL_VERSION"
+
+else
+	fail "Unknown install type: $ASDF_INSTALL_TYPE"
+fi
