@@ -13,17 +13,28 @@ mkdir -p "$ASDF_DOWNLOAD_PATH"
 if [ "$ASDF_INSTALL_TYPE" = "version" ]; then
 	release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION.$(platform_extension)"
 
-	# Download tar.gz file to the download directory
-	download_release "$ASDF_INSTALL_VERSION" "$release_file"
+	(
+		# Download tar.gz or tar.xz file to the download directory
+		download_release "$ASDF_INSTALL_VERSION" "$release_file"
 
-	#  Extract contents of tar.gz file into the download directory
-	$(platform_tar) -xf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
+		# Extract contents of tar.gz or tar.xz file into the download directory
+		$(platform_tar) -xf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
 
-	# Remove the tar.gz file since we don't need to keep it
-	rm "$release_file"
+		# Remove the tar.gz file since we don't need to keep it
+		rm "$release_file"
+	) || (
+		# On failure, no files should be placed in $ASDF_DOWNLOAD_PATH
+		clean_up_dir "$ASDF_DOWNLOAD_PATH"
+	)
 elif [ "$ASDF_INSTALL_TYPE" = "ref" ]; then
 	# A commit/tag/branch can be specified using the "ref:<some-ref>" syntax
-	download_release_via_git_clone "$ASDF_FLUTTER_SOURCE_REPO_URL" "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH"
+	(
+		# Clone $ASDF_INSTALL_VERSION reference
+		download_release_via_git_clone "$ASDF_FLUTTER_SOURCE_REPO_URL" "$ASDF_INSTALL_VERSION" "$ASDF_DOWNLOAD_PATH"
+	) || (
+		# On failure, no files should be placed in $ASDF_DOWNLOAD_PATH
+		clean_up_dir "$ASDF_DOWNLOAD_PATH"
+	)
 else
 	fail "Unknown install type: $ASDF_INSTALL_TYPE"
 fi

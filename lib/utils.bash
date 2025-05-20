@@ -3,7 +3,6 @@
 set -euo pipefail
 
 # An user of the plugin could specify a custom Flutter fork
-# using Mise environment variables for example: https://mise.jdx.dev/environments/
 export ASDF_FLUTTER_SOURCE_REPO_URL=${ASDF_FLUTTER_SOURCE_REPO_URL:-"https://github.com/flutter/flutter"}
 
 FLUTTER_LIST_BASE_URL="https://storage.googleapis.com"
@@ -161,6 +160,12 @@ list_all_versions() {
 	download_jq_if_not_exists
 
 	list_filter_by_archtecture "$(machine_architecture)" | jq -r '.version + "-" + .channel'
+}
+
+clean_up_dir() {
+	local dir="$1"
+	rm -rf "$dir"
+	mkdir -p "$dir"
 }
 
 download_release() {
