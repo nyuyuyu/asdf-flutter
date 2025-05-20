@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/nyuyuyu/asdf-flutter/compare/v1.3.0...v1.3.1) (2025-05-20)
+
+
+### Bug Fixes
+
+* clean up `$ASDF_DOWNLOAD_PATH` when download fails ([#30](https://github.com/nyuyuyu/asdf-flutter/issues/30)) ([b375bee](https://github.com/nyuyuyu/asdf-flutter/commit/b375beec877c131c9975220e990f91f7ea7bf174))
+
 ## [1.3.0](https://github.com/nyuyuyu/asdf-flutter/compare/v1.2.1...v1.3.0) (2025-05-16)
 
 
