@@ -221,7 +221,7 @@ install_version() {
 
 	(
 		rmdir "$install_path"
-		mv "$ASDF_DOWNLOAD_PATH" "$install_path"
+		cp -ipR "$ASDF_DOWNLOAD_PATH" "$install_path"
 
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
