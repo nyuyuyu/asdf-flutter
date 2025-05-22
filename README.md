@@ -19,7 +19,7 @@
 
 - `bash`, `curl`, `tar`: generic POSIX utilities.
 - `jq`: recommended.
-- `xz`: only required for Linux.
+- `xz`: only required on Linux, supported in GNU tar v1.22 and above.
 
 # Install
 
