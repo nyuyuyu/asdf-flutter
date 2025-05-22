@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/nyuyuyu/asdf-flutter/compare/v1.3.1...v1.3.2) (2025-05-22)
+
+
+### Bug Fixes
+
+* `--keep-download` option of `install` subcommand is ignored ([#32](https://github.com/nyuyuyu/asdf-flutter/issues/32)) ([65222a2](https://github.com/nyuyuyu/asdf-flutter/commit/65222a2ab012bda4b069bccb199b3df1ff14b97e))
+
 ## [1.3.1](https://github.com/nyuyuyu/asdf-flutter/compare/v1.3.0...v1.3.1) (2025-05-20)
 
 
