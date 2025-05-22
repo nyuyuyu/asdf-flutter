@@ -14,13 +14,13 @@ if [ "$ASDF_INSTALL_TYPE" = "version" ]; then
 	release_file="$ASDF_DOWNLOAD_PATH/$TOOL_NAME-$ASDF_INSTALL_VERSION.$(platform_extension)"
 
 	(
-		# Download tar.gz or tar.xz file to the download directory
+		# Download zip or tar.xz file to the download directory
 		download_release "$ASDF_INSTALL_VERSION" "$release_file"
 
-		# Extract contents of tar.gz or tar.xz file into the download directory
+		# Extract contents of zip or tar.xz file into the download directory
 		$(platform_tar) -xf "$release_file" -C "$ASDF_DOWNLOAD_PATH" --strip-components=1 || fail "Could not extract $release_file"
 
-		# Remove the tar.gz file since we don't need to keep it
+		# Remove the zip or tar.xz file since we don't need to keep it
 		rm "$release_file"
 	) || (
 		# On failure, no files should be placed in $ASDF_DOWNLOAD_PATH
